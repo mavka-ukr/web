@@ -1,0 +1,28 @@
+{
+  "name": "mavka-web",
+  "version": "0.0.1",
+  "description": "Mavka for Web",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mavka-ukr/web.git"
+  },
+  "keywords": [
+    "mavka"
+  ],
+  "author": "kohutd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mavka-ukr/web/issues"
+  },
+  "homepage": "https://github.com/mavka-ukr/web#readme",
+  "dependencies": {
+    "mavka": "^0.9.24"
+  },
+  "devDependencies": {
+    "prettier": "2.8.4"
+  }
+}
