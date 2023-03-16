@@ -1,4 +1,6 @@
-# Мавка для переглядача
+# Мавка Web
+
+Мавка для переглядача.
 
 ## Встановлення
 
@@ -9,11 +11,13 @@ npm i mavka-web
 ## Використання
 
 ```js
-import mavkaWeb from 'mavka-web';
+import { createMavkaWeb } from 'mavka-web';
 
-mavkaWeb.context.set('друк', mavkaWeb.tools.fn((args) => {
+const mavka = createMavkaWeb();
+
+mavka.context.set('друк', mavka.tools.fn((args) => {
   console.log(...args);
 }));
 
-await mavkaWeb.eval('друк("Привіт від Лесі!")');
+await mavka.eval('друк("Привіт від Лесі!")');
 ```

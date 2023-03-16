@@ -14,10 +14,10 @@ function buildExternal(mavka) {
   return {};
 }
 
-const mavkaWeb = new Mavka({
-  buildGlobalContext,
-  buildLoader,
-  buildExternal
-});
-
-export default mavkaWeb;
+export function createMavkaWeb(options = {}) {
+  return new Mavka({
+    buildGlobalContext,
+    buildLoader,
+    buildExternal
+  });
+}
