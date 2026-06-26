@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мавка</title>
+
+    <style>
+      :root {
+        --bg-color: #ffffff;
+        --text-color: #121212;
+        --color-red: #cc0000;
+        --color-green: #008800;
+        --color-blue: #0000cc;
+        --color-yellow: #b58500;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-color: black;
+          --text-color: #f5f5f5;
+          --color-red: #ff6b6b;
+          --color-green: #4cd964;
+          --color-blue: #5ac8fa;
+          --color-yellow: #ffcc00;
+        }
+      }
+
+      html, body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Courier New', Courier, monospace;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      #terminal {
+        min-height: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        cursor: text;
+      }
+
+      .terminal-row {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        white-space: pre-wrap;
+      }
+
+      .terminal-row span {
+        white-space: pre-wrap;
+      }
+
+      input {
+        flex: 1;
+        font-size: 1rem;
+        background: transparent;
+        color: inherit;
+        border: none;
+        outline: none;
+        padding: 0;
+        font-family: inherit;
+      }
+
+      .term-color-red { color: var(--color-red); }
+      .term-color-green { color: var(--color-green); }
+      .term-color-blue { color: var(--color-blue); }
+      .term-color-yellow { color: var(--color-yellow); }
+      .term-color-default { color: inherit; }
+    </style>
+  </head>
+  <body>
+    <div id="terminal"></div>
+    <script src="./mavka_web.js"></script>
+    <script>
+      (async () => {
+        const availableVersions = await fetch('./версії/версії.txt')
+        .then((r) => r.text())
+        .then((t) => t.trim().split("\n"))
+        .then((vs) => vs.map((v) => v.split(":")).map(([pv, mv]) => ({packageVersion: pv, mavkaVersion: mv})));
+
+        const PACKAGE_VERSION = availableVersions[availableVersions.length - 1].packageVersion;
+        const MAVKA_VERSION = availableVersions[availableVersions.length - 1].mavkaVersion;
+
+        document.title = `Мавка ${MAVKA_VERSION}`;
+
+        const terminal = document.getElementById("terminal");
+
+        terminal.addEventListener("click", () => {
+          const selection = window.getSelection().toString();
+          if (!selection) {
+            const inputEl = document.getElementById("input");
+            if (inputEl) {
+              inputEl.focus();
+            }
+          }
+        });
+
+        const mavka = new Mavka(PACKAGE_VERSION, {
+          print: (value, color) => {
+            const colorClass = `term-color-${color || "default"}`;
+            terminal.innerHTML += `<span class="${colorClass}" style="white-space: pre-wrap;">${value.replaceAll("\n", "<br>")}</span>`;
+          },
+          readline: (callback, prefix) => {
+            const rowEl = document.createElement("div");
+            rowEl.className = "terminal-row";
+
+            if (prefix) {
+              const prefixEl = document.createElement("span");
+              prefixEl.innerHTML = prefix.replaceAll("\n", "<br>");
+              rowEl.appendChild(prefixEl);
+            }
+
+            const inputEl = document.createElement("input");
+            inputEl.id = "input";
+            rowEl.appendChild(inputEl);
+
+            terminal.appendChild(rowEl);
+            inputEl.focus();
+
+            inputEl.addEventListener("keydown", function handleEnter(event) {
+              if (event.key === "Enter") {
+                const inputValue = inputEl.value;
+                inputEl.removeEventListener("keydown", handleEnter);
+                inputEl.removeAttribute("id");
+
+                const textNode = document.createTextNode(inputValue);
+                inputEl.parentNode.replaceChild(textNode, inputEl);
+
+                callback(inputValue);
+              }
+            });
+          }
+        });
+
+        await mavka.load();
+
+        const resultCode = await mavka.run();
+
+        console.log('Mavka exited with code', resultCode);
+      })();
+    </script>
+  </body>
+</html>
