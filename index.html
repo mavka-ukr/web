@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Мавка</title>
 
+    <link rel="icon" type="image/png" href="./мавка.png" />
+    <link
+      rel="icon"
+      sizes="any"
+      type="image/svg+xml"
+      href="./мавка.svg"
+    />
+
     <style>
       :root {
         --bg-color: #ffffff;
@@ -15,24 +23,27 @@
         --color-yellow: #b58500;
       }
 
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg-color: black;
-          --text-color: #f5f5f5;
-          --color-red: #ff6b6b;
-          --color-green: #4cd964;
-          --color-blue: #5ac8fa;
-          --color-yellow: #ffcc00;
-        }
+      html.dark {
+        --bg-color: black;
+        --text-color: #f5f5f5;
+        --color-red: #ff6b6b;
+        --color-green: #4cd964;
+        --color-blue: #5ac8fa;
+        --color-yellow: #ffcc00;
       }
 
       html, body {
         background-color: var(--bg-color);
         color: var(--text-color);
-        font-family: 'Courier New', Courier, monospace;
+        font-family: monospace;
         margin: 0;
         padding: 0;
         height: 100%;
+      }
+
+      * {
+        font-family: monospace;
+        font-size: 1rem;
       }
 
       #terminal {
@@ -75,14 +86,35 @@
     <div id="terminal"></div>
     <script src="./mavka_web.js"></script>
     <script>
+      function getQueryVal(key, url = window.location.href) {
+        return new URL(url).searchParams.get(key);
+      }
+
+      const themeFromQuery = getQueryVal('тема');
+      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (isSystemDark || themeFromQuery === 'темна') {
+        document.documentElement.classList.add('dark');
+      }
+
+      if (themeFromQuery === 'світла') {
+        document.documentElement.classList.remove('dark');
+      }
+
       (async () => {
         const availableVersions = await fetch('./версії/версії.txt')
-        .then((r) => r.text())
-        .then((t) => t.trim().split("\n"))
-        .then((vs) => vs.map((v) => v.split(":")).map(([pv, mv]) => ({packageVersion: pv, mavkaVersion: mv})));
+            .then((r) => r.text())
+            .then((t) => t.trim().split("\n"))
+            .then((vs) => vs.map((v) => v.split(":")).map(([pv, mv]) => ({packageVersion: pv, mavkaVersion: mv})));
 
-        const PACKAGE_VERSION = availableVersions[availableVersions.length - 1].packageVersion;
-        const MAVKA_VERSION = availableVersions[availableVersions.length - 1].mavkaVersion;
+        const versionFromQuery = getQueryVal('в');
+
+        const matchedVersion = [...availableVersions].reverse().find(v => v.mavkaVersion === versionFromQuery);
+
+        const finalVersion = matchedVersion || availableVersions[availableVersions.length - 1];
+
+        const PACKAGE_VERSION = finalVersion.packageVersion;
+        const MAVKA_VERSION = finalVersion.mavkaVersion;
 
         document.title = `Мавка ${MAVKA_VERSION}`;
 
