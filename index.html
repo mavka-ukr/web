@@ -105,6 +105,17 @@
         document.documentElement.classList.remove('dark');
       }
 
+      let initialCommands = [];
+      const rowsFromQuery = getQueryVal('рядки');
+
+      if (rowsFromQuery) {
+        try {
+          initialCommands = JSON.parse(rowsFromQuery);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
       (async () => {
         const availableVersions = await fetch('./версії/версії.txt')
             .then((r) => r.text())
@@ -147,6 +158,15 @@
               const prefixEl = document.createElement("span");
               prefixEl.innerHTML = prefix.replaceAll("\n", "<br>");
               rowEl.appendChild(prefixEl);
+            }
+
+            if (initialCommands.length) {
+              const cmd = initialCommands.shift();
+              const textNode = document.createTextNode(cmd);
+              rowEl.appendChild(textNode);
+              terminal.appendChild(rowEl);
+              callback(cmd);
+              return;
             }
 
             const inputEl = document.createElement("input");
