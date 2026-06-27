@@ -187,7 +187,7 @@ class Mavka {
   static async fetchAvailableVersions() {
     const url = `${window.MAVKA_WEB_URL}/версії/версії.txt`;
 
-    const response = await fetch('./версії/версії.txt');
+    const response = await fetch(url);
     const text = await response.text();
     const lines = text.trim().split("\n");
 
