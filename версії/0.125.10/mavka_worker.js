@@ -376,7 +376,7 @@
   var mproc = new WebMavkaProcess();
   var mbib = new WebMavkaBib();
   var mw = new MavkaWASM(mfs, mproc, mbib);
-  fetch(`https://веб.мавка.укр/wasm/\u043C\u0430\u0432\u043A\u0430-${package_default.mavkaVersion}.wasm`).then((r) => r.arrayBuffer()).then((buffer) => mw.instantiate(buffer)).then(() => {
+  fetch(`../../wasm/\u043C\u0430\u0432\u043A\u0430-${package_default.mavkaVersion}.wasm`).then((r) => r.arrayBuffer()).then((buffer) => mw.instantiate(buffer)).then(() => {
     self.postMessage({ type: "MAVKA_READY" });
   });
   self.onmessage = (event) => {

@@ -108,9 +108,9 @@
     <div id="terminal"></div>
     <script src="./mavka_web.js"></script>
     <script>
-      // if (window.location.hostname !== "веб.мавка.укр") {
-      //   window.MAVKA_WEB_URL = ".";
-      // }
+      if (window.location.hostname !== "веб.мавка.укр") {
+        window.MAVKA_WEB_URL = ".";
+      }
 
       window.addEventListener('message', (event) => {
         if (event.data === 'FOCUS') {

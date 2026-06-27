@@ -22,7 +22,7 @@ class Mavka {
   }
 
   load() {
-    return new Promise((res, rej) => {
+    return new Promise(async (res, rej) => {
       if (this.ready) {
         rej(new Error("Mavka already loaded!"));
         return;
@@ -43,7 +43,7 @@ class Mavka {
         return new Worker(blobURL);
       }
 
-      this.worker = createCrossOriginWorker(`${window.MAVKA_WEB_URL}/версії/${this.version}/mavka_worker.js`);
+      this.worker = await createCrossOriginWorker(`${window.MAVKA_WEB_URL}/версії/${this.version}/mavka_worker.js`);
 
       this.readyListener = { res, rej };
 
