@@ -30,7 +30,7 @@ class Mavka {
         return;
       }
 
-      this.worker = new Worker(`./версії/${this.version}/mavka_worker.js`);
+      this.worker = new Worker(`https://веб.мавка.укр/версії/${this.version}/mavka_worker.js`);
 
       this.readyListener = { res, rej };
 
