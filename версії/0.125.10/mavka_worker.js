@@ -376,14 +376,17 @@
   var mproc = new WebMavkaProcess();
   var mbib = new WebMavkaBib();
   var mw = new MavkaWASM(mfs, mproc, mbib);
-  fetch(`../../wasm/\u043C\u0430\u0432\u043A\u0430-${package_default.mavkaVersion}.wasm`).then((r) => r.arrayBuffer()).then((buffer) => mw.instantiate(buffer)).then(() => {
-    self.postMessage({ type: "MAVKA_READY" });
-  });
   self.onmessage = (event) => {
     const eventData = event.data;
     if (eventData && typeof eventData === "object") {
       const type = eventData.type;
       const id = eventData.id;
+      if (type === "INIT") {
+        const mavkaWebUrl = eventData.mavkaWebUrl || "https://\u0432\u0435\u0431.\u043C\u0430\u0432\u043A\u0430.\u0443\u043A\u0440";
+        fetch(`${mavkaWebUrl}/\u0432\u0435\u0440\u0441\u0456\u0457/\u043C\u0430\u0432\u043A\u0430-${package_default.mavkaVersion}.wasm`).then((r) => r.arrayBuffer()).then((buffer) => mw.instantiate(buffer)).then(() => {
+          self.postMessage({ type: "MAVKA_READY" });
+        });
+      }
       if (type === "WRITE") {
         const path = eventData.path;
         const value = eventData.value;
