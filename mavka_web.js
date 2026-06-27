@@ -191,8 +191,7 @@ class Mavka {
 
   terminate() {
     if (!this.worker) {
-      rej(new Error("No worker!"));
-      return;
+      throw new Error("No worker!");
     }
 
     this.worker.terminate();
