@@ -1,3 +1,5 @@
+window.MAVKA_WEB_URL = "https://веб.мавка.укр";
+
 class Mavka {
   version;
   options;
@@ -30,7 +32,7 @@ class Mavka {
         return;
       }
 
-      this.worker = new Worker(`https://веб.мавка.укр/версії/${this.version}/mavka_worker.js`);
+      this.worker = new Worker(`${window.MAVKA_WEB_URL}/версії/${this.version}/mavka_worker.js`);
 
       this.readyListener = { res, rej };
 
