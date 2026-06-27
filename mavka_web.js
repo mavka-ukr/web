@@ -189,11 +189,14 @@ class Mavka {
   }
 
   terminate() {
-    if (this.ready) {
-      this.worker.terminate();
-
-      this.reset();
+    if (!this.worker) {
+      rej(new Error("No worker!"));
+      return;
     }
+
+    this.worker.terminate();
+
+    this.reset();
   }
 
   static async fetchAvailableVersions() {
