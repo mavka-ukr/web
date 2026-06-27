@@ -11,6 +11,10 @@ class Mavka {
   listeners;
 
   constructor(version, options) {
+    this.reset();
+  }
+
+  reset() {
     this.version = version;
     this.options = options || {};
     this.worker = null;
@@ -182,6 +186,14 @@ class Mavka {
 
       this.listeners.set(id, { res, rej });
     });
+  }
+
+  terminate() {
+    if (this.ready) {
+      this.worker.terminate();
+
+      this.reset();
+    }
   }
 
   static async fetchAvailableVersions() {
