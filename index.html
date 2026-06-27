@@ -145,19 +145,16 @@
       }
 
       (async () => {
-        const availableVersions = await fetch('./версії/версії.txt')
-            .then((r) => r.text())
-            .then((t) => t.trim().split("\n"))
-            .then((vs) => vs.map((v) => v.split(":")).map(([pv, mv]) => ({packageVersion: pv, mavkaVersion: mv})));
+        const availableVersions = await Mavka.fetchAvailableVersions();
 
         const versionFromQuery = getQueryVal('в');
 
-        const matchedVersion = [...availableVersions].reverse().find(v => v.mavkaVersion === versionFromQuery);
+        const matchedVersion = [...availableVersions].reverse().find(v => v.mavka === versionFromQuery);
 
         const finalVersion = matchedVersion || availableVersions[availableVersions.length - 1];
 
-        const PACKAGE_VERSION = finalVersion.packageVersion;
-        const MAVKA_VERSION = finalVersion.mavkaVersion;
+        const PACKAGE_VERSION = finalVersion.pkg;
+        const MAVKA_VERSION = finalVersion.mavka;
 
         document.title = `Мавка ${MAVKA_VERSION}`;
 

@@ -183,4 +183,16 @@ class Mavka {
       this.listeners.set(id, { res, rej });
     });
   }
+
+  static async fetchAvailableVersions() {
+    const url = `${window.MAVKA_WEB_URL}/версії/версії.txt`;
+
+    const response = await fetch('./версії/версії.txt');
+    const text = await response.text();
+    const lines = text.trim().split("\n");
+
+    return lines
+      .map((line) => line.split(":"))
+      .map(([pkg, mavka]) => ({ pkg, mavka }))
+  }
 }
