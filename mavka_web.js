@@ -32,7 +32,18 @@ class Mavka {
         return;
       }
 
-      this.worker = new Worker(`${window.MAVKA_WEB_URL}/версії/${this.version}/mavka_worker.js`);
+      async function createCrossOriginWorker(url) {
+        const response = await fetch(url);
+        const scriptText = await response.text();
+
+        const blob = new Blob([scriptText], { type: 'application/javascript' });
+
+        const blobURL = URL.createObjectURL(blob);
+
+        return new Worker(blobURL);
+      }
+
+      this.worker = createCrossOriginWorker(`${window.MAVKA_WEB_URL}/версії/${this.version}/mavka_worker.js`);
 
       this.readyListener = { res, rej };
 
