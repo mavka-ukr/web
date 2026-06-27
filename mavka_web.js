@@ -11,12 +11,13 @@ class Mavka {
   listeners;
 
   constructor(version, options) {
+    this.version = version;
+    this.options = options || {};
+
     this.reset();
   }
 
   reset() {
-    this.version = version;
-    this.options = options || {};
     this.worker = null;
     this.loading = false;
     this.ready = false;
