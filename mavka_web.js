@@ -47,6 +47,8 @@ class Mavka {
 
       this.readyListener = { res, rej };
 
+      this.worker.postMessage({ type: "INIT", mavkaWebUrl: window.MAVKA_WEB_URL });
+
       this.worker.onmessage = (event) => {
         const eventData = event.data;
 

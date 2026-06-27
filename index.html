@@ -109,7 +109,7 @@
     <script src="./mavka_web.js"></script>
     <script>
       if (window.location.hostname !== "веб.мавка.укр") {
-        window.MAVKA_WEB_URL = ".";
+        window.MAVKA_WEB_URL = window.location.origin;
       }
 
       window.addEventListener('message', (event) => {

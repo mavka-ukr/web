@@ -383,7 +383,7 @@
       const id = eventData.id;
       if (type === "INIT") {
         const mavkaWebUrl = eventData.mavkaWebUrl || "https://\u0432\u0435\u0431.\u043C\u0430\u0432\u043A\u0430.\u0443\u043A\u0440";
-        fetch(`${mavkaWebUrl}/\u0432\u0435\u0440\u0441\u0456\u0457/\u043C\u0430\u0432\u043A\u0430-${package_default.mavkaVersion}.wasm`).then((r) => r.arrayBuffer()).then((buffer) => mw.instantiate(buffer)).then(() => {
+        fetch(`${mavkaWebUrl}/wasm/\u043C\u0430\u0432\u043A\u0430-${package_default.mavkaVersion}.wasm`).then((r) => r.arrayBuffer()).then((buffer) => mw.instantiate(buffer)).then(() => {
           self.postMessage({ type: "MAVKA_READY" });
         });
       }
