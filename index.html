@@ -158,6 +158,8 @@
       (async () => {
         const availableVersions = await Mavka.fetchAvailableVersions();
 
+        console.log(availableVersions);
+
         const versionFromQuery = getQueryVal("в");
 
         const matchedVersion = [...availableVersions]

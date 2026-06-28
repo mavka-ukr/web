@@ -2,7 +2,7 @@
   // package.json
   var package_default = {
     name: "mavka",
-    version: "0.125.10",
+    version: "0.125.11",
     description: "\u041C\u0430\u0432\u043A\u0430 \u0434\u043B\u044F JavaScript",
     license: "MIT",
     author: "OM",
@@ -27,7 +27,7 @@
       prettier: "3.8.5",
       typescript: "^6.0.3"
     },
-    mavkaVersion: "0.125.7"
+    mavkaVersion: "0.125.8"
   };
 
   // src/MavkaFS.ts
