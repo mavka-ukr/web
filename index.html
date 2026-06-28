@@ -6,16 +6,14 @@
     <title>Мавка</title>
 
     <link rel="icon" type="image/png" href="./мавка.png" />
-    <link
-      rel="icon"
-      sizes="any"
-      type="image/svg+xml"
-      href="./мавка.svg"
-    />
+    <link rel="icon" sizes="any" type="image/svg+xml" href="./мавка.svg" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       :root {
@@ -36,7 +34,8 @@
         --color-yellow: #ffcc00;
       }
 
-      html, body {
+      html,
+      body {
         background-color: var(--bg-color);
         color: var(--text-color);
         font-family: "Fira Code", monospace;
@@ -79,11 +78,21 @@
         font-family: inherit;
       }
 
-      .term-color-red { color: var(--color-red); }
-      .term-color-green { color: var(--color-green); }
-      .term-color-blue { color: var(--color-blue); }
-      .term-color-yellow { color: var(--color-yellow); }
-      .term-color-default { color: inherit; }
+      .term-color-red {
+        color: var(--color-red);
+      }
+      .term-color-green {
+        color: var(--color-green);
+      }
+      .term-color-blue {
+        color: var(--color-blue);
+      }
+      .term-color-yellow {
+        color: var(--color-yellow);
+      }
+      .term-color-default {
+        color: inherit;
+      }
 
       ::-webkit-scrollbar {
         width: 8px;
@@ -112,9 +121,9 @@
         window.MAVKA_WEB_URL = window.location.origin;
       }
 
-      window.addEventListener('message', (event) => {
-        if (event.data === 'FOCUS') {
-          document.querySelector('input').focus();
+      window.addEventListener("message", (event) => {
+        if (event.data === "FOCUS") {
+          document.querySelector("input").focus();
         }
       });
 
@@ -122,19 +131,21 @@
         return new URL(url).searchParams.get(key);
       }
 
-      const themeFromQuery = getQueryVal('тема');
-      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const themeFromQuery = getQueryVal("тема");
+      const isSystemDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
 
-      if (isSystemDark || themeFromQuery === 'темна') {
-        document.documentElement.classList.add('dark');
+      if (isSystemDark || themeFromQuery === "темна") {
+        document.documentElement.classList.add("dark");
       }
 
-      if (themeFromQuery === 'світла') {
-        document.documentElement.classList.remove('dark');
+      if (themeFromQuery === "світла") {
+        document.documentElement.classList.remove("dark");
       }
 
       let initialCommands = [];
-      const rowsFromQuery = getQueryVal('рядки');
+      const rowsFromQuery = getQueryVal("рядки");
 
       if (rowsFromQuery) {
         try {
@@ -147,11 +158,14 @@
       (async () => {
         const availableVersions = await Mavka.fetchAvailableVersions();
 
-        const versionFromQuery = getQueryVal('в');
+        const versionFromQuery = getQueryVal("в");
 
-        const matchedVersion = [...availableVersions].reverse().find(v => v.mavka === versionFromQuery);
+        const matchedVersion = [...availableVersions]
+          .reverse()
+          .find((v) => v.mavka === versionFromQuery);
 
-        const finalVersion = matchedVersion || availableVersions[availableVersions.length - 1];
+        const finalVersion =
+          matchedVersion || availableVersions[availableVersions.length - 1];
 
         const PACKAGE_VERSION = finalVersion.pkg;
         const MAVKA_VERSION = finalVersion.mavka;
@@ -196,6 +210,7 @@
 
             const inputEl = document.createElement("input");
             inputEl.id = "input";
+            inputEl.autocapitalize = "none";
             rowEl.appendChild(inputEl);
 
             terminal.appendChild(rowEl);
@@ -213,14 +228,14 @@
                 callback(inputValue);
               }
             });
-          }
+          },
         });
 
         await mavka.load();
 
         const resultCode = await mavka.run();
 
-        console.log('Mavka exited with code', resultCode);
+        console.log("Mavka exited with code", resultCode);
       })();
     </script>
   </body>
