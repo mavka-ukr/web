@@ -115,7 +115,6 @@
   </head>
   <body>
     <div id="terminal"></div>
-    <script src="./mavka_web.js"></script>
     <script>
       if (window.location.hostname !== "веб.мавка.укр") {
         window.MAVKA_WEB_URL = window.location.origin;
@@ -155,10 +154,23 @@
         }
       }
 
-      (async () => {
-        const availableVersions = await Mavka.fetchAvailableVersions();
+      const script = document.createElement("script");
+      script.src = "./mavka_web.js?=d" + Date.now();
+      script.async = true;
 
-        console.log(availableVersions);
+      script.onload = () => {
+        start();
+      };
+
+      script.onerror = (e) => {
+        alert("Не вдалося завантажити скрипт.");
+        console.error(e);
+      };
+
+      document.head.appendChild(script);
+
+      const start = async () => {
+        const availableVersions = await Mavka.fetchAvailableVersions();
 
         const versionFromQuery = getQueryVal("в");
 
@@ -239,7 +251,7 @@
         const resultCode = await mavka.run();
 
         console.log("Mavka exited with code", resultCode);
-      })();
+      };
     </script>
   </body>
 </html>
