@@ -10,6 +10,23 @@ class Mavka {
   eid;
   listeners;
 
+  static getSupportError() {
+    if (typeof WebAssembly === "undefined") {
+      return "WebAssembly недоступний у цьому браузері.";
+    }
+
+    if (typeof WebAssembly.Memory !== "function") {
+      return "WebAssembly Memory API не доступне; вимагається підтримка wasm64.";
+    }
+
+    try {
+      new WebAssembly.Memory({ initial: 1, maximum: 1, memory64: true });
+      return null;
+    } catch (e) {
+      return "Вимагається підтримка WebAssembly 64-bit. Ваш браузер або середовище не підтримує wasm64.";
+    }
+  }
+
   constructor(version, options) {
     this.version = version;
     this.options = options || {};

@@ -159,6 +159,12 @@
       script.async = true;
 
       script.onload = () => {
+        const supportError = Mavka.getSupportError && Mavka.getSupportError();
+        if (supportError) {
+          document.getElementById("terminal").textContent = supportError;
+          return;
+        }
+
         start();
       };
 
