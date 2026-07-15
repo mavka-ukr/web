@@ -111,10 +111,10 @@ class Mavka {
             const l = this.listeners.get(id);
             this.listeners.delete(id);
 
-            if (eventData.error) {
-              l.rej(eventData.error);
-            } else {
+            if (eventData.resultCode === 0) {
               l.res(eventData.resultCode);
+            } else {
+              l.rej({ error: eventData.error, resultCode: eventData.resultCode });
             }
           }
 
